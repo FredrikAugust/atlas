@@ -1,13 +1,14 @@
-import React, { Component } from "react";
+import React from "react";
 
-import { ExampleComponent } from "reactive-atlas";
+import { GoogleAPIProvider } from "reactive-atlas";
 
-export default class App extends Component {
-  render() {
-    return (
-      <div>
-        <ExampleComponent text="Modern React component module" />
-      </div>
-    );
-  }
-}
+export const App = () => {
+  return (
+    <GoogleAPIProvider
+      apiKey="AIzaSyBOpaLOe4y2QMtso6UQBUa3StPkMnJxGJs"
+      loadingComponent={<h1>Loading...</h1>}
+    >
+      <h1>Loaded!</h1>
+    </GoogleAPIProvider>
+  );
+};

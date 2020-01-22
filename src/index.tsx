@@ -1,7 +1,3 @@
-import * as React from "react";
+import { GoogleAPIProvider, useGoogle } from "./Components/GoogleAPIProvider";
 
-export interface IProps {
-  text: string;
-}
-
-export const ExampleComponent: React.FC<IProps> = ({ text }) => <h1>{text}</h1>;
+export { GoogleAPIProvider, useGoogle };
