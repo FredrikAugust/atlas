@@ -9,7 +9,7 @@ const APICtx = React.createContext<typeof google | null>(null);
 
 interface IGoogleAPIProviderProps {
   apiKey: string; // This is the Google API Key you got from Google's websites
-  loadingComponent: React.ReactNode;
+  loadingComponent?: React.ReactNode; // Show this while we're waiting for Google Maps API to load
 }
 
 /**
@@ -44,8 +44,10 @@ export const GoogleAPIProvider: React.FC<IGoogleAPIProviderProps> = props => {
 
   let renderEl: React.ReactNode | undefined;
 
-  if (loading) {
+  if (loading && props.loadingComponent) {
     renderEl = props.loadingComponent;
+  } else if (loading) {
+    renderEl = <pre>Loading Google Maps API...</pre>;
   } else {
     renderEl = props.children;
   }
