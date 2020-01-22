@@ -1,9 +1,15 @@
 import React from "react";
-import { IInjectedWithMapProps, withMap } from "./Map";
+import {
+  EventHandlerPair,
+  EventName,
+  IInjectedWithMapProps,
+  withMap
+} from "./Map";
 
 interface ICircleProps {
   options: google.maps.CircleOptions;
   children: never;
+  eventHandlers?: Array<EventHandlerPair<EventName, google.maps.Circle>>;
 }
 
 class Circle extends React.Component<ICircleProps & IInjectedWithMapProps> {
@@ -14,13 +20,27 @@ class Circle extends React.Component<ICircleProps & IInjectedWithMapProps> {
     this.circle = new google.maps.Circle(this.props.options);
   }
 
+  public componentDidMount() {
+    // TODO: remove listeners
+    if (this.props.eventHandlers) {
+      this.props.eventHandlers.forEach(([name, handler]) =>
+        this.circle.addListener(name, args => {
+          console.log(`handling ${name} on marker`);
+          handler(this.circle, [args!]);
+        })
+      );
+    }
+  }
+
   public componentWillUnmount() {
     this.circle.setMap(null);
   }
 
   public componentDidUpdate() {
     console.log("updating circle");
-    this.circle.setMap(this.props.map);
+    if (this.circle.getMap() !== this.props.map) {
+      this.circle.setMap(this.props.map);
+    }
   }
 
   public shouldComponentUpdate(

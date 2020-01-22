@@ -33,7 +33,15 @@ interface IMapProps {
     center: google.maps.LatLng | google.maps.LatLngLiteral;
     zoom: number;
   };
+  eventHandlers?: Array<EventHandlerPair<EventName, google.maps.Map>>;
 }
+
+export type EventName = keyof google.maps.MapHandlerMap;
+type EventHandlerFunc<N extends EventName> = google.maps.MapHandlerMap[N];
+export type EventHandlerPair<N extends EventName, T> = [
+  N,
+  (obj: T, args: EventHandlerFunc<N>) => void
+];
 
 const MapElem = styled.div`
   flex-grow: 1;
@@ -52,9 +60,19 @@ export class Map extends React.Component<IMapProps> {
     // This also prevents the children from rendering with a map that is not
     // instantiated yet. 2 fluer i en smekk as we say in norge.
     this.map.addListener("tilesloaded", () => this.forceUpdate());
+
+    // TODO: remove listeners
+    if (this.props.eventHandlers) {
+      this.props.eventHandlers.forEach(([name, handler]) =>
+        this.map.addListener(name, args => {
+          console.log(`handling ${name} on map`);
+          handler(this.map, [args!]);
+        })
+      );
+    }
   }
 
-  public shouldComponentUpdate(nextProps: IMapProps) {
+  public shouldComponentUpdate(nextProps: React.PropsWithChildren<IMapProps>) {
     // Prop check
     if (
       this.props.options.zoom !== nextProps.options.zoom ||
@@ -64,7 +82,15 @@ export class Map extends React.Component<IMapProps> {
       return true;
     }
 
+    if (this.props.children !== nextProps.children) {
+      return true;
+    }
+
     return false;
+  }
+
+  public componentDidUpdate() {
+    console.log("updated map");
   }
 
   public render() {
