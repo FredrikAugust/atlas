@@ -1,5 +1,5 @@
 {
-  "name": "atlas",
+  "name": "reactive-atlas",
   "version": "1.0.0",
   "description": "Google Maps JavaScript v3 API React Wrapper.",
   "author": "fredrikaugust",

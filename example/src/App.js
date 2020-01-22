@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 
-import { ExampleComponent } from "atlas";
+import { ExampleComponent } from "reactive-atlas";
 
 export default class App extends Component {
   render() {
