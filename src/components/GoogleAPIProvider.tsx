@@ -1,5 +1,10 @@
 import React from "react";
 
+/**
+ * Technically, there's no reason to even have a context, as google will set
+ * the google object on window, but I think it's cleaner to use this when
+ * possible due to type safety.
+ */
 const APICtx = React.createContext<typeof google | null>(null);
 
 interface IGoogleAPIProviderProps {

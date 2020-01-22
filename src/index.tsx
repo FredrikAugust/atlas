@@ -1,3 +1,4 @@
-import { GoogleAPIProvider, useGoogle } from "./Components/GoogleAPIProvider";
+import { GoogleAPIProvider, useGoogle } from "./components/GoogleAPIProvider";
+import { Map } from "./components/Map";
 
-export { GoogleAPIProvider, useGoogle };
+export { GoogleAPIProvider, useGoogle, Map };

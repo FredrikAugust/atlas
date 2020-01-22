@@ -1,14 +1,14 @@
 import React from "react";
 
-import { GoogleAPIProvider } from "reactive-atlas";
+import { Map, useGoogle } from "reactive-atlas";
 
 export const App = () => {
+  const google = useGoogle();
+
   return (
-    <GoogleAPIProvider
-      apiKey="AIzaSyBOpaLOe4y2QMtso6UQBUa3StPkMnJxGJs"
-      loadingComponent={<h1>Loading...</h1>}
-    >
+    <div>
       <h1>Loaded!</h1>
-    </GoogleAPIProvider>
+      <Map options={{ zoom: 8, center: new google.maps.LatLng(63, 10) }} />
+    </div>
   );
 };
