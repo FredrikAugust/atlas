@@ -9,7 +9,9 @@ interface IMarkerProps {
 class Marker extends React.Component<IMarkerProps & IInjectedWithMapProps> {
   public marker: google.maps.Marker;
 
-  public componentDidMount() {
+  constructor(args: IMarkerProps & IInjectedWithMapProps) {
+    super(args);
+
     this.marker = new google.maps.Marker(this.props.options);
   }
 
@@ -18,6 +20,7 @@ class Marker extends React.Component<IMarkerProps & IInjectedWithMapProps> {
   }
 
   public componentDidUpdate() {
+    console.log("updating marker");
     this.marker.setMap(this.props.map);
   }
 

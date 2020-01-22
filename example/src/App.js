@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Map, useGoogle, Marker } from "reactive-atlas";
+import { Map, useGoogle, Marker, Circle } from "reactive-atlas";
 
 export const App = () => {
   const google = useGoogle();
@@ -15,6 +15,9 @@ export const App = () => {
             title: "Hello, World!",
             label: "B"
           }}
+        />
+        <Circle
+          options={{ radius: 100000, center: new google.maps.LatLng(63, 10) }}
         />
       </Map>
     </div>
