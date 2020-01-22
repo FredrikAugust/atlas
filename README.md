@@ -86,6 +86,10 @@ const Globus = () => {
 };
 ```
 
+### Events
+
+TODO
+
 ## License
 
 MIT © [fredrikaugust](https://github.com/fredrikaugust)

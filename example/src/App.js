@@ -16,12 +16,35 @@ export const App = () => {
         <Marker
           options={{
             position: new google.maps.LatLng(pos, pos),
-            title: "Hello, World!",
-            label: "B"
+            title: "Hello, World!"
           }}
+          eventHandlers={[
+            [
+              "click",
+              (marker, evt) => {
+                marker.setAnimation(google.maps.Animation.BOUNCE);
+                setTimeout(() => marker.setAnimation(null), 500);
+
+                console.log(evt);
+              }
+            ]
+          ]}
         />
         <Circle
-          options={{ radius: 100000, center: new google.maps.LatLng(63, 10) }}
+          options={{
+            editable: true,
+            radius: 100000,
+            center: new google.maps.LatLng(63, 10)
+          }}
+          eventHandlers={[
+            [
+              "radius_changed",
+              (circle, evt) => {
+                console.log(circle.getRadius());
+                console.log(evt);
+              }
+            ]
+          ]}
         />
       </Map>
     </div>

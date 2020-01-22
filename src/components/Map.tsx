@@ -36,8 +36,15 @@ interface IMapProps {
   eventHandlers?: Array<EventHandlerPair<EventName, google.maps.Map>>;
 }
 
-export type EventName = keyof google.maps.MapHandlerMap;
-type EventHandlerFunc<N extends EventName> = google.maps.MapHandlerMap[N];
+/**
+ * This is a dirty hack to add the missing event name to the list of events.
+ */
+interface IRadiusChangedHandlerMap {
+  radius_changed: [undefined];
+}
+type PatchedHandlerMap = google.maps.MapHandlerMap & IRadiusChangedHandlerMap;
+export type EventName = keyof PatchedHandlerMap;
+type EventHandlerFunc<N extends EventName> = PatchedHandlerMap[N];
 export type EventHandlerPair<N extends EventName, T> = [
   N,
   (obj: T, args: EventHandlerFunc<N>) => void
