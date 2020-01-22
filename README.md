@@ -4,6 +4,8 @@
 
 [![NPM](https://img.shields.io/npm/v/reactive-atlas.svg)](https://www.npmjs.com/package/reactive-atlas) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 
+**[Live demo](https://fredrikaugust.github.io/atlas/)**
+
 ## Install
 
 ```bash
@@ -57,6 +59,30 @@ const Globus = () => {
   const google = useGoogle();
 
   return <Map options={{ zoom: 8, center: new google.maps.LatLng(1, 2) }} />;
+};
+```
+
+### Marker
+
+The marker is a common object in maps. It has to be a child of the provider.
+
+```tsx
+import { Map, Marker, useGoogle } from "reactive-atlas";
+
+const Globus = () => {
+  const google = useGoogle();
+
+  return (
+    <Map options={{ zoom: 8, center: new google.maps.LatLng(1, 2) }}>
+      <Marker
+        options={{
+          position: new google.maps.LatLng(63, 10),
+          title: "Hello, World!",
+          label: "B"
+        }}
+      />
+    </Map>
+  );
 };
 ```
 
