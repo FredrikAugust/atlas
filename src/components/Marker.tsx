@@ -1,4 +1,5 @@
 import React from "react";
+import { compareLatLng } from "../helpers/latlng";
 import {
   EventHandlerPair,
   EventName,
@@ -68,8 +69,7 @@ class Marker extends React.Component<IMarkerProps> {
     }
 
     if (
-      this.marker.getPosition()!.toString() !==
-      nextProps.options.position.toString()
+      !compareLatLng(this.marker.getPosition()!, nextProps.options.position)
     ) {
       this.marker.setPosition(nextProps.options.position);
       return true;

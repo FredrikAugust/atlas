@@ -1,4 +1,5 @@
 import React from "react";
+import { compareLatLng } from "../helpers/latlng";
 import {
   EventHandlerPair,
   EventName,
@@ -58,9 +59,7 @@ class Circle extends React.Component<ICircleProps> {
       return true;
     }
 
-    if (
-      this.circle.getCenter().toString() !== nextProps.options.center.toString()
-    ) {
+    if (!compareLatLng(this.circle.getCenter(), nextProps.options.center)) {
       this.circle.setCenter(nextProps.options.center);
       return true;
     }
