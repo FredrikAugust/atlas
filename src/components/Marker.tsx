@@ -44,39 +44,29 @@ class Marker extends React.Component<IMarkerProps> {
   }
 
   public shouldComponentUpdate(nextProps: IMarkerProps) {
-    console.log(this.props);
-    console.log(nextProps);
-    let dirty = false;
-
     if (this.props.eventHandlers !== nextProps.eventHandlers) {
       this.updateEventListeners(nextProps.eventHandlers);
     }
 
     if (this.props.map !== nextProps.map) {
       this.marker.setMap(nextProps.map!);
-      // I will take the liberty to perform this in shouldComponentUpdate, as I believe the solution is cleaner.
-      dirty = true;
     }
 
     if (this.props.options.label !== nextProps.options.label) {
       this.marker.setLabel(nextProps.options.label || null);
-      dirty = true;
     }
 
     if (this.props.options.title !== nextProps.options.title) {
       this.marker.setTitle(nextProps.options.title || null);
-      dirty = true;
     }
 
     if (
       !compareLatLng(this.props.options.position, nextProps.options.position)
     ) {
       this.marker.setPosition(nextProps.options.position);
-      dirty = true;
     }
 
-    console.log(`Dirty: ${dirty}`);
-    return dirty;
+    return this.props === nextProps;
   }
 
   public render() {

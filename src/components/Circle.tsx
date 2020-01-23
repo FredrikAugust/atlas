@@ -41,36 +41,27 @@ class Circle extends React.Component<ICircleProps> {
   }
 
   public shouldComponentUpdate(nextProps: ICircleProps) {
-    console.log(this.props);
-    console.log(nextProps);
-    let dirty = false;
-
     if (this.props.eventHandlers !== nextProps.eventHandlers) {
       this.updateEventListeners(nextProps.eventHandlers);
     }
 
     if (this.props.options.editable !== nextProps.options.editable) {
       this.circle.setEditable(nextProps.options.editable || false);
-      dirty = true;
     }
 
     if (this.props.map !== nextProps.map) {
       this.circle.setMap(nextProps.map!);
-      dirty = true;
     }
 
     if (!compareLatLng(this.props.options.center, nextProps.options.center)) {
       this.circle.setCenter(nextProps.options.center);
-      dirty = true;
     }
 
     if (this.props.options.radius !== nextProps.options.radius) {
       this.circle.setRadius(nextProps.options.radius);
-      dirty = true;
     }
 
-    console.log(`Dirty: ${dirty}`);
-    return dirty;
+    return this.props === nextProps;
   }
 
   public render() {
