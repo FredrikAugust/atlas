@@ -54,6 +54,10 @@ class Circle extends React.Component<ICircleProps> {
       return true;
     }
 
+    if (this.props.options !== nextProps.options) {
+      return true;
+    }
+
     return false;
   }
 

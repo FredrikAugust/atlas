@@ -57,11 +57,7 @@ class Marker extends React.Component<IMarkerProps> {
       return true;
     }
 
-    // Received a new position
-    if (
-      this.props.options.position!.toString() !==
-      nextProps.options.position!.toString()
-    ) {
+    if (this.props.options !== nextProps.options) {
       return true;
     }
 
