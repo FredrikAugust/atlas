@@ -84,11 +84,12 @@ export class Map extends React.Component<IMapProps> {
     // With this, we can load the map, and when it's done, load in the rest.
     // This also prevents the children from rendering with a map that is not
     // instantiated yet. 2 fluer i en smekk as we say in norge.
-    this.map.addListener("tilesloaded", () => this.forceUpdate());
+    this.map.addListener("tilesloaded", () => {
+      this.forceUpdate();
+      this.setBounds(this.props.bounds);
+    });
 
     this.setEventListenersFromProps();
-
-    this.setBounds(this.props.bounds);
   }
 
   /**
@@ -221,7 +222,7 @@ export class Map extends React.Component<IMapProps> {
       | undefined
   ) {
     if (bounds) {
-      this.map.fitBounds(bounds);
+      this.map.fitBounds(bounds, { bottom: 10, left: 10, right: 10, top: 10 });
       this.map.panToBounds(bounds);
     }
   }
