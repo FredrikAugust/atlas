@@ -86,10 +86,13 @@ export class Map extends React.Component<IMapProps> {
     // instantiated yet. 2 fluer i en smekk as we say in norge.
     this.map.addListener("tilesloaded", () => {
       this.forceUpdate();
-      this.setBounds(this.props.bounds);
     });
 
     this.setEventListenersFromProps();
+
+    google.maps.event.addListenerOnce(this.map, "tilesloaded", () => {
+      this.setBounds(this.props.bounds);
+    });
   }
 
   /**
