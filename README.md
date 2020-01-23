@@ -92,6 +92,65 @@ const Globus = () => {
 };
 ```
 
+### Circle
+
+Exactly the same usage as `Marker`.
+
+Required `option` keys are `radius: number`, and `center: google.maps.LatLng | google.maps.LatLngLiteral`.
+
+```tsx
+import { Map, Circle, useGoogle } from "reactive-atlas";
+
+const Globus = () => {
+  const google = useGoogle();
+
+  return (
+    <Map options={{ zoom: 8, center: new google.maps.LatLng(1, 2) }}>
+      <Circle
+        options={{
+          position: new google.maps.LatLng(63, 10),
+          radius: 128000
+        }}
+      />
+    </Map>
+  );
+};
+```
+
+#### Example of resizable and movable circle
+
+First you have to wrap it in a Provider and Map of course.
+
+Create an event handler which simply prints the new location and radius.
+
+```ts
+const circleChangePosRadius = circle =>
+  console.log(
+    `Circle is at ${circle
+      .getCenter()
+      .toString()} with radius ${circle.getRadius()}.`
+  );
+```
+
+Wire it up to print pos/radius every time the radius or center changes.
+
+```tsx
+<Circle
+  options={{
+    editable: true,
+    radius: 100000,
+    center: new google.maps.LatLng(63, 10)
+  }}
+  eventHandlers={[
+    ["radius_changed", circleChangePosRadius],
+    ["center_changed", circleChangePosRadius]
+  ]}
+/>
+```
+
+The same principles would be used when making a `Marker` draggable; just
+replace `radius_changed`/`center_changed` with `dragend`.
+
 ### Events
 
 To retain as much of the original code as possible from the google API, I've
@@ -148,6 +207,12 @@ const Globus = () => {
   );
 };
 ```
+
+### Styling
+
+For now, there isn't really much styling on the map. It's container is set to
+`flex-grow: 1`, which means that you should try to use flex to control the
+positioning.
 
 ## License
 

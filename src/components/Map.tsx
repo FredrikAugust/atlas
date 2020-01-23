@@ -50,6 +50,9 @@ export type EventHandlerPair<N extends EventName, T> = [
   (obj: T, args: EventHandlerFunc<N>) => void
 ];
 
+/**
+ * We rely on flex to control the size of the map.
+ */
 const MapElem = styled.div`
   flex-grow: 1;
 `;
