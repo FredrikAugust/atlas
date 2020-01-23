@@ -16,7 +16,7 @@ export interface IInjectedWithMapProps {
 export const withMap = <P extends IInjectedWithMapProps>(
   Component: React.ComponentType<P>
 ) => {
-  const C: React.FC<P> = props => {
+  const C: React.FC<Exclude<P, IInjectedWithMapProps>> = props => {
     const map = useMap();
     return <Component map={map} {...props} />;
   };
