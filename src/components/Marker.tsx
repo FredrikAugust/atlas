@@ -10,7 +10,7 @@ interface IMarkerProps {
   options: google.maps.MarkerOptions & {
     position: google.maps.LatLng | google.maps.LatLngLiteral;
   };
-  children: never;
+  children?: never;
   eventHandlers?: Array<EventHandlerPair<EventName, google.maps.Marker>>;
 }
 

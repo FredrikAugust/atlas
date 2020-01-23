@@ -11,7 +11,7 @@ interface ICircleProps {
     radius: number;
     center: google.maps.LatLng | google.maps.LatLngLiteral;
   };
-  children: never;
+  children?: never;
   eventHandlers?: Array<EventHandlerPair<EventName, google.maps.Circle>>;
 }
 
