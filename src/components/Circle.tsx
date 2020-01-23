@@ -50,11 +50,23 @@ class Circle extends React.Component<ICircleProps> {
       this.updateEventListeners(nextProps.eventHandlers);
     }
 
+    if (this.props.options.editable !== nextProps.options.editable) {
+      this.circle.setEditable(this.props.options.editable || false);
+    }
+
     if (this.props.map === undefined && nextProps.map) {
       return true;
     }
 
-    if (this.props.options !== nextProps.options) {
+    if (
+      this.circle.getCenter().toString() !== nextProps.options.center.toString()
+    ) {
+      this.circle.setCenter(nextProps.options.center);
+      return true;
+    }
+
+    if (this.circle.getRadius() !== nextProps.options.radius) {
+      this.circle.setRadius(nextProps.options.radius);
       return true;
     }
 

@@ -57,7 +57,21 @@ class Marker extends React.Component<IMarkerProps> {
       return true;
     }
 
-    if (this.props.options !== nextProps.options) {
+    if (this.props.options.label !== nextProps.options.label) {
+      this.marker.setLabel(nextProps.options.label || null);
+      return true;
+    }
+
+    if (this.props.options.title !== nextProps.options.title) {
+      this.marker.setTitle(nextProps.options.title || null);
+      return true;
+    }
+
+    if (
+      this.marker.getPosition()!.toString() !==
+      nextProps.options.position.toString()
+    ) {
+      this.marker.setPosition(nextProps.options.position);
       return true;
     }
 
