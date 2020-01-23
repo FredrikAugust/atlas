@@ -41,6 +41,8 @@ class Circle extends React.Component<ICircleProps> {
   }
 
   public shouldComponentUpdate(nextProps: ICircleProps) {
+    console.log(this.props);
+    console.log(nextProps);
     let dirty = false;
 
     if (this.props.eventHandlers !== nextProps.eventHandlers) {
@@ -52,7 +54,7 @@ class Circle extends React.Component<ICircleProps> {
       dirty = true;
     }
 
-    if (this.props.map === undefined && nextProps.map) {
+    if (this.props.map !== nextProps.map) {
       this.circle.setMap(nextProps.map!);
       dirty = true;
     }

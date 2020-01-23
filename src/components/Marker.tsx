@@ -44,13 +44,15 @@ class Marker extends React.Component<IMarkerProps> {
   }
 
   public shouldComponentUpdate(nextProps: IMarkerProps) {
+    console.log(this.props);
+    console.log(nextProps);
     let dirty = false;
 
     if (this.props.eventHandlers !== nextProps.eventHandlers) {
       this.updateEventListeners(nextProps.eventHandlers);
     }
 
-    if (this.props.map === undefined && nextProps.map) {
+    if (this.props.map !== nextProps.map) {
       this.marker.setMap(nextProps.map!);
       // I will take the liberty to perform this in shouldComponentUpdate, as I believe the solution is cleaner.
       dirty = true;
