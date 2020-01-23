@@ -1,6 +1,6 @@
 {
   "name": "reactive-atlas",
-  "version": "1.2.10",
+  "version": "1.2.11",
   "description": "Google Maps JavaScript v3 API React Wrapper.",
   "author": "fredrikaugust",
   "license": "MIT",
