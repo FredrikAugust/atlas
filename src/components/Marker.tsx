@@ -67,7 +67,7 @@ class Marker extends React.Component<IMarkerProps> {
     }
 
     if (
-      !compareLatLng(this.marker.getPosition()!, nextProps.options.position)
+      !compareLatLng(this.props.options.position, nextProps.options.position)
     ) {
       this.marker.setPosition(nextProps.options.position);
       dirty = true;

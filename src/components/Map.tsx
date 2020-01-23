@@ -111,7 +111,7 @@ export class Map extends React.Component<IMapProps> {
       this.updateEventListeners(nextProps.eventHandlers);
     }
 
-    if (this.props.bounds !== nextProps.bounds) {
+    if (this.props.children !== nextProps.children) {
       return true;
     }
 
@@ -121,10 +121,6 @@ export class Map extends React.Component<IMapProps> {
       this.props.options.center.toString() !==
         nextProps.options.center.toString()
     ) {
-      return true;
-    }
-
-    if (this.props.children !== nextProps.children) {
       return true;
     }
 

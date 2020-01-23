@@ -47,8 +47,8 @@ class Circle extends React.Component<ICircleProps> {
       this.updateEventListeners(nextProps.eventHandlers);
     }
 
-    if (this.circle.getEditable() !== nextProps.options.editable) {
-      this.circle.setEditable(this.props.options.editable || false);
+    if (this.props.options.editable !== nextProps.options.editable) {
+      this.circle.setEditable(nextProps.options.editable || false);
       dirty = true;
     }
 
@@ -57,12 +57,12 @@ class Circle extends React.Component<ICircleProps> {
       dirty = true;
     }
 
-    if (!compareLatLng(this.circle.getCenter(), nextProps.options.center)) {
+    if (!compareLatLng(this.props.options.center, nextProps.options.center)) {
       this.circle.setCenter(nextProps.options.center);
       dirty = true;
     }
 
-    if (this.circle.getRadius() !== nextProps.options.radius) {
+    if (this.props.options.radius !== nextProps.options.radius) {
       this.circle.setRadius(nextProps.options.radius);
       dirty = true;
     }
