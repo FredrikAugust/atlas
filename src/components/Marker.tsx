@@ -75,6 +75,7 @@ class Marker extends React.Component<IMarkerProps> {
       dirty = true;
     }
 
+    console.log(`Dirty: ${dirty}`);
     return dirty;
   }
 

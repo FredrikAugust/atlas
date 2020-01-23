@@ -69,6 +69,7 @@ class Circle extends React.Component<ICircleProps> {
       dirty = true;
     }
 
+    console.log(`Dirty: ${dirty}`);
     return dirty;
   }
 
