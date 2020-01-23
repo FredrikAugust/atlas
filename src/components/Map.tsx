@@ -6,7 +6,7 @@ const MapCtx = React.createContext<google.maps.Map<HTMLElement> | null>(null);
 
 export const useMap = () => React.useContext(MapCtx)!;
 export interface IInjectedWithMapProps {
-  map: google.maps.Map;
+  map?: google.maps.Map;
 }
 /**
  * This is a helper I use to provide components not able to use hooks the ability to receive the map object.
@@ -16,7 +16,7 @@ export interface IInjectedWithMapProps {
 export const withMap = <P extends IInjectedWithMapProps>(
   Component: React.ComponentType<P>
 ) => {
-  const C: React.FC<Exclude<P, IInjectedWithMapProps>> = props => {
+  const C: React.FC<P> = props => {
     const map = useMap();
     return <Component map={map} {...props} />;
   };
