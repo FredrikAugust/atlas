@@ -82,6 +82,11 @@ export class Map extends React.Component<IMapProps> {
   public componentDidMount() {
     this.map = new google.maps.Map(this.mapRef.current!, this.props.options);
 
+    // Set the context
+    google.maps.event.addListenerOnce(this.map, "tilesloaded", () =>
+      this.forceUpdate()
+    );
+
     this.setEventListenersFromProps();
 
     google.maps.event.addListenerOnce(this.map, "tilesloaded", () => {
