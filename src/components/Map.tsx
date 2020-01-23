@@ -81,12 +81,6 @@ export class Map extends React.Component<IMapProps> {
 
   public componentDidMount() {
     this.map = new google.maps.Map(this.mapRef.current!, this.props.options);
-    // With this, we can load the map, and when it's done, load in the rest.
-    // This also prevents the children from rendering with a map that is not
-    // instantiated yet. 2 fluer i en smekk as we say in norge.
-    this.map.addListener("tilesloaded", () => {
-      this.forceUpdate();
-    });
 
     this.setEventListenersFromProps();
 
@@ -104,12 +98,6 @@ export class Map extends React.Component<IMapProps> {
 
   public shouldComponentUpdate(nextProps: React.PropsWithChildren<IMapProps>) {
     if (!this.props.bounds && nextProps.bounds) {
-      this.setBounds(nextProps.bounds);
-    } else if (
-      this.props.bounds &&
-      nextProps.bounds &&
-      this.props.bounds.toString() !== nextProps.bounds.toString()
-    ) {
       this.setBounds(nextProps.bounds);
     }
 

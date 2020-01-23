@@ -51,8 +51,9 @@ class Circle extends React.Component<ICircleProps> {
       this.updateEventListeners(nextProps.eventHandlers);
     }
 
-    if (this.props.options.editable !== nextProps.options.editable) {
+    if (this.circle.getEditable() !== nextProps.options.editable) {
       this.circle.setEditable(this.props.options.editable || false);
+      return true; // update because sometimes we only edit the editable field
     }
 
     if (this.props.map === undefined && nextProps.map) {
