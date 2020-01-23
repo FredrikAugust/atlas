@@ -6,12 +6,16 @@ export const App = () => {
   const google = useGoogle();
   const [pos, setPos] = React.useState(12);
 
+  const [mapHandler, setMapHandler] = React.useState([
+    ["click", (map, args) => setPos(p => p + 1)]
+  ]);
+
   return (
     <div style={{ height: "100%", display: "flex", flexDirection: "column" }}>
       <h1>Loaded!</h1>
       <Map
         options={{ zoom: 8, center: new google.maps.LatLng(12, 12) }}
-        eventHandlers={[["click", (map, args) => setPos(p => p + 1)]]}
+        eventHandlers={mapHandler}
       >
         <Marker
           options={{
@@ -24,6 +28,7 @@ export const App = () => {
               (marker, evt) => {
                 marker.setAnimation(google.maps.Animation.BOUNCE);
                 setTimeout(() => marker.setAnimation(null), 500);
+                setMapHandler([]);
 
                 console.log(evt);
               }

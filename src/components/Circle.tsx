@@ -33,6 +33,10 @@ class Circle extends React.Component<ICircleProps & IInjectedWithMapProps> {
   }
 
   public componentWillUnmount() {
+    /**
+     * Clean up stray event listeners.
+     */
+    google.maps.event.clearInstanceListeners(this.circle);
     this.circle.setMap(null);
   }
 
@@ -57,5 +61,7 @@ class Circle extends React.Component<ICircleProps & IInjectedWithMapProps> {
     return null;
   }
 }
+
+(Circle as React.ComponentClass).displayName = "Circle";
 
 export default withMap(Circle);

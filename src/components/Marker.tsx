@@ -37,6 +37,10 @@ class Marker extends React.Component<IMarkerProps & IInjectedWithMapProps> {
   }
 
   public componentWillUnmount() {
+    /**
+     * Clean up stray event listeners.
+     */
+    google.maps.event.clearInstanceListeners(this.marker);
     this.marker.setMap(null);
   }
 
@@ -73,4 +77,5 @@ class Marker extends React.Component<IMarkerProps & IInjectedWithMapProps> {
   }
 }
 
+(Marker as React.ComponentClass).displayName = "Marker";
 export default withMap(Marker);

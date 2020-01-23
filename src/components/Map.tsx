@@ -20,9 +20,8 @@ export const withMap = <P extends IInjectedWithMapProps>(
     const map = useMap();
     return <Component map={map} {...props} />;
   };
-  // This makes it a bit prettier while debugging. Showing this instead of
-  // "Anonymous".
-  C.displayName = `withMap(${Component.displayName}`;
+  // This makes it a bit prettier while debugging.
+  C.displayName = `withMap(${Component.displayName || "unnamed"})`;
   return C;
 };
 
@@ -71,18 +70,27 @@ export class Map extends React.Component<IMapProps> {
     // instantiated yet. 2 fluer i en smekk as we say in norge.
     this.map.addListener("tilesloaded", () => this.forceUpdate());
 
-    // TODO: remove listeners
-    if (this.props.eventHandlers) {
-      this.props.eventHandlers.forEach(([name, handler]) =>
-        this.map.addListener(name, args => {
-          console.log(`handling ${name} on map`);
-          handler(this.map, [args!]);
-        })
-      );
-    }
+    this.setEventListenersFromProps();
+  }
+
+  /**
+   * Clean up stray event listeners.
+   */
+  public componentWillUnmount() {
+    google.maps.event.clearInstanceListeners(this.map);
   }
 
   public shouldComponentUpdate(nextProps: React.PropsWithChildren<IMapProps>) {
+    /**
+     * This means we have to set or unset some event handlers.
+     * We don't need to rerender, we just need to update the handlers.
+     *
+     * #minimalrendergang
+     */
+    if (this.props.eventHandlers !== nextProps.eventHandlers) {
+      this.updateEventListeners(nextProps.eventHandlers);
+    }
+
     // Prop check
     if (
       this.props.options.zoom !== nextProps.options.zoom ||
@@ -112,5 +120,65 @@ export class Map extends React.Component<IMapProps> {
         </>
       </MapCtx.Provider>
     );
+  }
+
+  private setEventListenersFromProps() {
+    if (this.props.eventHandlers) {
+      this.setEventListeners(this.props.eventHandlers);
+    }
+  }
+
+  /**
+   * Do not call this if setEventListeners can be undefined. Sets all event
+   * listeners passed.
+   *
+   * @param eventHandlers Event handlers, but we are sure that they are not undefined.
+   */
+  private setEventListeners(eventHandlers: IMapProps["eventHandlers"]) {
+    eventHandlers!.forEach(([name, handler]) =>
+      this.map.addListener(name, args => {
+        console.log(`handling ${name} on map`);
+        handler(this.map, [args!]);
+      })
+    );
+  }
+
+  private updateEventListeners(newEventHandlers: IMapProps["eventHandlers"]) {
+    if (this.props.eventHandlers && newEventHandlers) {
+      // what handlers were on map but now aren't
+      const toRemove = this.props.eventHandlers.filter(
+        eh =>
+          // Compare name
+          newEventHandlers.findIndex(neh => neh[0] === eh[0]) === -1
+      );
+
+      // Remove the listeners that aren't being received in props anymore.
+      toRemove.forEach(tr => {
+        console.log(`removing map handler of type ${tr[0]}`);
+        google.maps.event.clearListeners(this.map, tr[0]);
+      });
+
+      const toAdd = newEventHandlers.filter(
+        neh =>
+          // Compare name
+          // We have to have a "!" here for some reason even though we checked
+          // it going into the if statement. TS??
+          this.props.eventHandlers!.findIndex(eh => neh[0] === eh[0]) === -1
+      );
+
+      // Add the listeners we now have, but didn't have before.
+      toAdd.forEach(tr => {
+        console.log(`adding map handler of type ${tr[0]}`);
+        this.map.addListener(tr[0], tr[1]);
+      });
+    }
+
+    if (!newEventHandlers) {
+      google.maps.event.clearInstanceListeners(this.map);
+    }
+
+    if (!this.props.eventHandlers) {
+      this.setEventListeners(newEventHandlers);
+    }
   }
 }
