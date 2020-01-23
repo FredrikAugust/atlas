@@ -6,6 +6,10 @@
 
 **[Live demo](https://fredrikaugust.github.io/atlas/)**
 
+#### Notes
+
+- `google.maps.LatLngLiteral` is just an object of type `{ lat: number, lng: number }`
+
 ## Install
 
 ```bash
@@ -23,7 +27,7 @@ components that require access to the map with this.
 ```tsx
 import { GoogleAPIProvider } from "reactive-atlas";
 
-const App: React.FC = props => (
+const Root: React.FC = props => (
   <GoogleAPIProvider apiKey="API_KEY">{props.children}</GoogleAPIProvider>
 );
 ```
@@ -37,7 +41,7 @@ exposed to us. Has to be used in a component that is a child of
 ```tsx
 import { useGoogle } from "reactive-atlas";
 
-const C: React.FC = props => {
+const ComponentThatUsesGoogleAPI: React.FC = props => {
   const google = useGoogle();
 
   // ...
@@ -49,8 +53,8 @@ const C: React.FC = props => {
 The map is the most important object. It has to be a child (though not
 direct) of `GoogleAPIProvider`.
 
-The required options are `zoom` and `center`. A `number` (0-18 inclusive),
-and `google.maps.LatLng`, respectively.
+The **required** options are `zoom` and `center`. A `number` (0-18 inclusive),
+and `google.maps.LatLng` or `google.maps.LatLngLiteral`, respectively.
 
 ```tsx
 import { Map, useGoogle } from "reactive-atlas";
@@ -62,9 +66,11 @@ const Globus = () => {
 };
 ```
 
+All `Marker`s and other elements should be children of a map, and you should not nest `Map`s.
+
 ### Marker
 
-The marker is a common object in maps. It has to be a child of the provider.
+The marker is a common object in maps. It has to be a child of a `Map`.
 
 ```tsx
 import { Map, Marker, useGoogle } from "reactive-atlas";
@@ -88,7 +94,60 @@ const Globus = () => {
 
 ### Events
 
-TODO
+To retain as much of the original code as possible from the google API, I've
+decided to opt for a bit strange event handling. Instead of doing like
+`google-maps-react` (the reason I'm making this library) and using "standard"
+HTML-like handlers (i.e. `onCenter_changed` (the weird combination of
+camelCase and snake_case is because google uses snake-case, and HTML uses
+camelCase)), I've opted to use a list of event handlers you'd like to attach
+to the element. This property can be used on `Map`, `Marker`, and `Circle`
+(as of now).
+
+To remove an event handler, simply remove the entry from the array of
+handlers, and the library will remove the listener. It will also clean up all
+listeners when unmounting.
+
+The first parameter in the callback function is the object you're operating
+on, so in the next example, it's a marker, but if you were to add a listener
+to a circle, it would be the circle. This allows you to operate directly on
+the google API, which might be desirable.
+
+The second parameter is a list with one of the following;
+
+1. Nothing, i.e. `[]`
+2. `undefined`, i.e. `[undefined]`
+3. The event (e.g. `MouseEvent`), i.e. `[MouseEvent]`
+
+This is a bit strange, but it works quite well. I believe it was intended for
+possible expansion, so that you could pass more than one event.
+
+```tsx
+import { Map, Marker, useGoogle } from "reactive-atlas";
+
+const Globus = () => {
+  const google = useGoogle();
+
+  return (
+    <Map options={{ zoom: 8, center: new google.maps.LatLng(1, 2) }}>
+      <Marker
+        options={{
+          position: new google.maps.LatLng(pos, pos)
+        }}
+        eventHandlers={[
+          [
+            "click",
+            (marker, evt) => {
+              // Make it jump!
+              marker.setAnimation(google.maps.Animation.BOUNCE);
+              setTimeout(() => marker.setAnimation(null), 500);
+            }
+          ]
+        ]}
+      />
+    </Map>
+  );
+};
+```
 
 ## License
 
