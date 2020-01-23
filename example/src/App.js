@@ -8,12 +8,31 @@ export const App = () => {
 
   const [mapHandler, setMapHandler] = React.useState([]);
 
+  const [bounds, setBounds] = React.useState();
+
+  React.useEffect(() => {
+    const b = new google.maps.LatLngBounds();
+
+    b.extend(
+      new google.maps.Circle({
+        center: { lat: 63, lng: 10 },
+        radius: 10000
+      }).getCenter()
+    );
+    b.extend(
+      new google.maps.Marker({ position: { lat: pos, lng: pos } }).getPosition()
+    );
+
+    setBounds(b);
+  }, [pos]);
+
   return (
     <div style={{ height: "100%", display: "flex", flexDirection: "column" }}>
       <h1>Loaded!</h1>
       <Map
         options={{ zoom: 8, center: new google.maps.LatLng(12, 12) }}
         eventHandlers={mapHandler}
+        bounds={bounds}
       >
         <Marker
           options={{
@@ -41,7 +60,7 @@ export const App = () => {
           }}
           eventHandlers={[
             [
-              "radius_changed",
+              "click",
               (circle, evt) => {
                 console.log(circle.getRadius());
                 console.log(evt);

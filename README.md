@@ -210,6 +210,15 @@ const Globus = () => {
 };
 ```
 
+### Bounds
+
+Often times, you want to specify the bounds of the place you want to see.
+
+You can do this using the `bounds` prop on `Map`. Simply send in a
+`google.maps.LatLngBounds | google.maps.LatLngBoundsLiteral` object, and it
+will scale to that area. If you change the `bounds`, the map will fit to the
+new area and pan there.
+
 ### Styling
 
 For now, there isn't really much styling on the map. It's container is set to

@@ -25,7 +25,6 @@ export const withMap = <P extends IInjectedWithMapProps>(
   return C;
 };
 
-// tslint:disable-next-line: no-empty-interface
 interface IMapProps {
   // Override, as center and zoom are actually required
   options: google.maps.MapOptions & {
@@ -33,6 +32,7 @@ interface IMapProps {
     zoom: number;
   };
   eventHandlers?: Array<EventHandlerPair<EventName, google.maps.Map>>;
+  bounds?: google.maps.LatLngBounds | google.maps.LatLngBoundsLiteral;
 }
 
 /**
@@ -41,9 +41,24 @@ interface IMapProps {
 interface IRadiusChangedHandlerMap {
   radius_changed: [undefined];
 }
+/**
+ * We need to add in 'radius_changed' ourselves.
+ */
 type PatchedHandlerMap = google.maps.MapHandlerMap & IRadiusChangedHandlerMap;
 export type EventName = keyof PatchedHandlerMap;
 type EventHandlerFunc<N extends EventName> = PatchedHandlerMap[N];
+/**
+ * This is a type which essentially looks like this
+ * [
+ *  [
+ *   "name of event, e.g. 'dragend'",
+ *   (map, [MouseEvent]) => void
+ *  ]
+ * ]
+ *
+ * The reason for the complicated-ness is that I want to use google's own
+ * variable names instead of hard-coding them.
+ */
 export type EventHandlerPair<N extends EventName, T> = [
   N,
   (obj: T, args: EventHandlerFunc<N>) => void
@@ -71,6 +86,8 @@ export class Map extends React.Component<IMapProps> {
     this.map.addListener("tilesloaded", () => this.forceUpdate());
 
     this.setEventListenersFromProps();
+
+    this.setBounds(this.props.bounds);
   }
 
   /**
@@ -81,6 +98,16 @@ export class Map extends React.Component<IMapProps> {
   }
 
   public shouldComponentUpdate(nextProps: React.PropsWithChildren<IMapProps>) {
+    if (!this.props.bounds && nextProps.bounds) {
+      this.setBounds(nextProps.bounds);
+    } else if (
+      this.props.bounds &&
+      nextProps.bounds &&
+      this.props.bounds.toString() != nextProps.bounds.toString()
+    ) {
+      this.setBounds(nextProps.bounds);
+    }
+
     /**
      * This means we have to set or unset some event handlers.
      * We don't need to rerender, we just need to update the handlers.
@@ -89,6 +116,10 @@ export class Map extends React.Component<IMapProps> {
      */
     if (this.props.eventHandlers !== nextProps.eventHandlers) {
       this.updateEventListeners(nextProps.eventHandlers);
+    }
+
+    if (this.props.bounds !== nextProps.bounds) {
+      return true;
     }
 
     // Prop check
@@ -179,6 +210,18 @@ export class Map extends React.Component<IMapProps> {
 
     if (!this.props.eventHandlers) {
       this.setEventListeners(newEventHandlers);
+    }
+  }
+
+  private setBounds(
+    bounds:
+      | google.maps.LatLngBounds
+      | google.maps.LatLngBoundsLiteral
+      | undefined
+  ) {
+    if (bounds) {
+      this.map.fitBounds(bounds);
+      this.map.panToBounds(bounds);
     }
   }
 }
