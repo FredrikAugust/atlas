@@ -38,39 +38,36 @@ class Circle extends React.Component<ICircleProps> {
 
   public componentDidUpdate() {
     console.log("updating circle");
-    if (this.circle.getMap() !== this.props.map) {
-      this.circle.setMap(this.props.map!);
-    }
-
-    this.circle.setCenter(this.props.options.center);
-    this.circle.setRadius(this.props.options.radius);
   }
 
   public shouldComponentUpdate(nextProps: ICircleProps) {
+    let dirty = false;
+
     if (this.props.eventHandlers !== nextProps.eventHandlers) {
       this.updateEventListeners(nextProps.eventHandlers);
     }
 
     if (this.circle.getEditable() !== nextProps.options.editable) {
       this.circle.setEditable(this.props.options.editable || false);
-      return true; // update because sometimes we only edit the editable field
+      dirty = true;
     }
 
     if (this.props.map === undefined && nextProps.map) {
-      return true;
+      this.circle.setMap(nextProps.map!);
+      dirty = true;
     }
 
     if (!compareLatLng(this.circle.getCenter(), nextProps.options.center)) {
       this.circle.setCenter(nextProps.options.center);
-      return true;
+      dirty = true;
     }
 
     if (this.circle.getRadius() !== nextProps.options.radius) {
       this.circle.setRadius(nextProps.options.radius);
-      return true;
+      dirty = true;
     }
 
-    return false;
+    return dirty;
   }
 
   public render() {
