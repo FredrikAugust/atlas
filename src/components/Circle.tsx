@@ -61,7 +61,7 @@ class Circle extends React.Component<ICircleProps> {
       this.circle.setRadius(nextProps.options.radius);
     }
 
-    return this.props === nextProps;
+    return true;
   }
 
   public render() {

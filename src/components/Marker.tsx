@@ -66,7 +66,7 @@ class Marker extends React.Component<IMarkerProps> {
       this.marker.setPosition(nextProps.options.position);
     }
 
-    return this.props === nextProps;
+    return true;
   }
 
   public render() {
