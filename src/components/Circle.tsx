@@ -6,7 +6,7 @@ import {
   withMap
 } from "./Map";
 
-interface ICircleProps {
+interface ICircleProps extends IInjectedWithMapProps {
   options: google.maps.CircleOptions & {
     radius: number;
     center: google.maps.LatLng | google.maps.LatLngLiteral;
@@ -15,10 +15,10 @@ interface ICircleProps {
   eventHandlers?: Array<EventHandlerPair<EventName, google.maps.Circle>>;
 }
 
-class Circle extends React.Component<ICircleProps & IInjectedWithMapProps> {
+class Circle extends React.Component<ICircleProps> {
   public circle: google.maps.Circle;
 
-  constructor(args: ICircleProps & IInjectedWithMapProps) {
+  constructor(args: ICircleProps) {
     super(args);
     this.circle = new google.maps.Circle(this.props.options);
   }
@@ -38,16 +38,14 @@ class Circle extends React.Component<ICircleProps & IInjectedWithMapProps> {
   public componentDidUpdate() {
     console.log("updating circle");
     if (this.circle.getMap() !== this.props.map) {
-      this.circle.setMap(this.props.map);
+      this.circle.setMap(this.props.map!);
     }
 
     this.circle.setCenter(this.props.options.center);
     this.circle.setRadius(this.props.options.radius);
   }
 
-  public shouldComponentUpdate(
-    nextProps: ICircleProps & IInjectedWithMapProps
-  ) {
+  public shouldComponentUpdate(nextProps: ICircleProps) {
     if (this.props.eventHandlers !== nextProps.eventHandlers) {
       this.updateEventListeners(nextProps.eventHandlers);
     }
@@ -128,4 +126,4 @@ class Circle extends React.Component<ICircleProps & IInjectedWithMapProps> {
 
 (Circle as React.ComponentClass).displayName = "Circle";
 
-export default withMap(Circle);
+export default withMap<ICircleProps>(Circle);

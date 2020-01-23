@@ -6,7 +6,7 @@ import {
   withMap
 } from "./Map";
 
-interface IMarkerProps {
+interface IMarkerProps extends IInjectedWithMapProps {
   options: google.maps.MarkerOptions & {
     position: google.maps.LatLng | google.maps.LatLngLiteral;
   };
@@ -14,10 +14,10 @@ interface IMarkerProps {
   eventHandlers?: Array<EventHandlerPair<EventName, google.maps.Marker>>;
 }
 
-class Marker extends React.Component<IMarkerProps & IInjectedWithMapProps> {
+class Marker extends React.Component<IMarkerProps> {
   public marker: google.maps.Marker;
 
-  constructor(args: IMarkerProps & IInjectedWithMapProps) {
+  constructor(args: IMarkerProps) {
     super(args);
 
     this.marker = new google.maps.Marker({
@@ -41,15 +41,13 @@ class Marker extends React.Component<IMarkerProps & IInjectedWithMapProps> {
   public componentDidUpdate() {
     console.log("updating marker");
     if (this.marker.getMap() !== this.props.map) {
-      this.marker.setMap(this.props.map);
+      this.marker.setMap(this.props.map!);
     }
 
     this.marker.setPosition(this.props.options.position);
   }
 
-  public shouldComponentUpdate(
-    nextProps: IMarkerProps & IInjectedWithMapProps
-  ) {
+  public shouldComponentUpdate(nextProps: IMarkerProps) {
     if (this.props.eventHandlers !== nextProps.eventHandlers) {
       this.updateEventListeners(nextProps.eventHandlers);
     }
@@ -138,4 +136,4 @@ class Marker extends React.Component<IMarkerProps & IInjectedWithMapProps> {
 }
 
 (Marker as React.ComponentClass).displayName = "Marker";
-export default withMap(Marker);
+export default withMap<IMarkerProps>(Marker);

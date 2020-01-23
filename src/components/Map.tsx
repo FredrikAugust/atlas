@@ -8,6 +8,7 @@ export const useMap = () => React.useContext(MapCtx)!;
 export interface IInjectedWithMapProps {
   map?: google.maps.Map;
 }
+
 /**
  * This is a helper I use to provide components not able to use hooks the ability to receive the map object.
  *
@@ -22,7 +23,7 @@ export const withMap = <P extends IInjectedWithMapProps>(
   };
   // This makes it a bit prettier while debugging.
   C.displayName = `withMap(${Component.displayName || "unnamed"})`;
-  return C;
+  return C as React.FC<Exclude<P, "map">>;
 };
 
 interface IMapProps {
@@ -103,7 +104,7 @@ export class Map extends React.Component<IMapProps> {
     } else if (
       this.props.bounds &&
       nextProps.bounds &&
-      this.props.bounds.toString() != nextProps.bounds.toString()
+      this.props.bounds.toString() !== nextProps.bounds.toString()
     ) {
       this.setBounds(nextProps.bounds);
     }
