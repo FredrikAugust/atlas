@@ -1,6 +1,7 @@
 import React from "react";
 
 import styled from "styled-components";
+import { compareLatLng } from "../helpers/latlng";
 
 const MapCtx = React.createContext<google.maps.Map<HTMLElement> | null>(null);
 
@@ -123,8 +124,7 @@ export class Map extends React.Component<IMapProps> {
     // Prop check
     if (
       this.props.options.zoom !== nextProps.options.zoom ||
-      this.props.options.center.toString() !==
-        nextProps.options.center.toString()
+      !compareLatLng(this.props.options.center, nextProps.options.center)
     ) {
       return true;
     }

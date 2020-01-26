@@ -22,6 +22,14 @@ class Circle extends React.Component<ICircleProps> {
   constructor(args: ICircleProps) {
     super(args);
     this.circle = new google.maps.Circle(this.props.options);
+
+    /**
+     * We need this, as we might unmount and remount as a result of redux store
+     * changes.
+     */
+    if (this.props.map) {
+      this.circle.setMap(this.props.map);
+    }
   }
 
   public componentDidMount() {
@@ -33,6 +41,9 @@ class Circle extends React.Component<ICircleProps> {
      * Clean up stray event listeners.
      */
     google.maps.event.clearInstanceListeners(this.circle);
+    /**
+     * This removes it from the map.
+     */
     this.circle.setMap(null);
   }
 
@@ -41,27 +52,33 @@ class Circle extends React.Component<ICircleProps> {
   }
 
   public shouldComponentUpdate(nextProps: ICircleProps) {
+    let dirty = false;
+
     if (this.props.eventHandlers !== nextProps.eventHandlers) {
       this.updateEventListeners(nextProps.eventHandlers);
     }
 
     if (this.props.options.editable !== nextProps.options.editable) {
       this.circle.setEditable(nextProps.options.editable || false);
+      dirty = true;
     }
 
     if (this.props.map !== nextProps.map) {
       this.circle.setMap(nextProps.map!);
+      dirty = true;
     }
 
     if (!compareLatLng(this.props.options.center, nextProps.options.center)) {
       this.circle.setCenter(nextProps.options.center);
+      dirty = true;
     }
 
     if (this.props.options.radius !== nextProps.options.radius) {
       this.circle.setRadius(nextProps.options.radius);
+      dirty = true;
     }
 
-    return true;
+    return dirty;
   }
 
   public render() {

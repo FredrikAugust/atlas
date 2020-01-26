@@ -28,6 +28,14 @@ class Marker extends React.Component<IMarkerProps> {
   }
 
   public componentDidMount() {
+    /**
+     * We need this, as we might unmount and remount as a result of redux store
+     * changes.
+     */
+    if (this.props.map) {
+      this.marker.setMap(this.props.map);
+    }
+
     this.setEventListenersFromProps();
   }
 
@@ -36,6 +44,9 @@ class Marker extends React.Component<IMarkerProps> {
      * Clean up stray event listeners.
      */
     google.maps.event.clearInstanceListeners(this.marker);
+    /**
+     * This removes it from the map.
+     */
     this.marker.setMap(null);
   }
 
@@ -44,29 +55,38 @@ class Marker extends React.Component<IMarkerProps> {
   }
 
   public shouldComponentUpdate(nextProps: IMarkerProps) {
+    let dirty = false;
+
     if (this.props.eventHandlers !== nextProps.eventHandlers) {
       this.updateEventListeners(nextProps.eventHandlers);
     }
 
+    /**
+     * We need this as the map is lazy loaded by the withMap injector.
+     */
     if (this.props.map !== nextProps.map) {
       this.marker.setMap(nextProps.map!);
+      dirty = true;
     }
 
     if (this.props.options.label !== nextProps.options.label) {
       this.marker.setLabel(nextProps.options.label || null);
+      dirty = true;
     }
 
     if (this.props.options.title !== nextProps.options.title) {
       this.marker.setTitle(nextProps.options.title || null);
+      dirty = true;
     }
 
     if (
       !compareLatLng(this.props.options.position, nextProps.options.position)
     ) {
       this.marker.setPosition(nextProps.options.position);
+      dirty = true;
     }
 
-    return true;
+    return dirty;
   }
 
   public render() {

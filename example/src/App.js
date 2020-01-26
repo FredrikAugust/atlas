@@ -8,6 +8,8 @@ export const App = () => {
 
   const [mapHandler, setMapHandler] = React.useState([]);
 
+  const [markers, setMarkers] = React.useState([]);
+
   const [bounds, setBounds] = React.useState();
 
   React.useEffect(() => {
@@ -34,6 +36,14 @@ export const App = () => {
         eventHandlers={mapHandler}
         bounds={bounds}
       >
+        {markers.map(e => (
+          <Marker
+            key={e}
+            options={{
+              position: { lat: Math.random() * 10, lng: Math.random() * 10 }
+            }}
+          />
+        ))}
         <Marker
           options={{
             position: new google.maps.LatLng(pos, pos),
@@ -46,6 +56,8 @@ export const App = () => {
                 marker.setAnimation(google.maps.Animation.BOUNCE);
                 setTimeout(() => marker.setAnimation(null), 500);
                 setMapHandler([["click", (map, args) => setPos(p => p + 1)]]);
+
+                setMarkers(m => [...m, Math.random()]);
 
                 console.log(evt);
               }
