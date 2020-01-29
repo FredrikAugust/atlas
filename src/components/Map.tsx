@@ -132,10 +132,6 @@ export class Map extends React.Component<IMapProps> {
     return false;
   }
 
-  public componentDidUpdate() {
-    console.log("updated map");
-  }
-
   public render() {
     return (
       <MapCtx.Provider value={this.map}>
@@ -162,7 +158,6 @@ export class Map extends React.Component<IMapProps> {
   private setEventListeners(eventHandlers: IMapProps["eventHandlers"]) {
     eventHandlers!.forEach(([name, handler]) =>
       this.map.addListener(name, args => {
-        console.log(`handling ${name} on map`);
         handler(this.map, [args!]);
       })
     );
@@ -179,7 +174,6 @@ export class Map extends React.Component<IMapProps> {
 
       // Remove the listeners that aren't being received in props anymore.
       toRemove.forEach(tr => {
-        console.log(`removing map handler of type ${tr[0]}`);
         google.maps.event.clearListeners(this.map, tr[0]);
       });
 
@@ -193,7 +187,6 @@ export class Map extends React.Component<IMapProps> {
 
       // Add the listeners we now have, but didn't have before.
       toAdd.forEach(tr => {
-        console.log(`adding map handler of type ${tr[0]}`);
         this.map.addListener(tr[0], tr[1]);
       });
     }

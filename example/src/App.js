@@ -58,8 +58,6 @@ export const App = () => {
                 setMapHandler([["click", (map, args) => setPos(p => p + 1)]]);
 
                 setMarkers(m => [...m, Math.random()]);
-
-                console.log(evt);
               }
             ]
           ]}
@@ -70,15 +68,6 @@ export const App = () => {
             radius: 100000,
             center: new google.maps.LatLng(63, 10)
           }}
-          eventHandlers={[
-            [
-              "click",
-              (circle, evt) => {
-                console.log(circle.getRadius());
-                console.log(evt);
-              }
-            ]
-          ]}
         />
       </Map>
     </div>

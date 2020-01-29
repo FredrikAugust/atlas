@@ -47,10 +47,6 @@ class Circle extends React.Component<ICircleProps> {
     this.circle.setMap(null);
   }
 
-  public componentDidUpdate() {
-    console.log("updating circle");
-  }
-
   public shouldComponentUpdate(nextProps: ICircleProps) {
     let dirty = false;
 
@@ -100,7 +96,6 @@ class Circle extends React.Component<ICircleProps> {
   private setEventListeners(eventHandlers: ICircleProps["eventHandlers"]) {
     eventHandlers!.forEach(([name, handler]) =>
       this.circle.addListener(name, args => {
-        console.log(`handling ${name} on circle`);
         handler(this.circle, [args!]);
       })
     );
@@ -119,7 +114,6 @@ class Circle extends React.Component<ICircleProps> {
 
       // Remove the listeners that aren't being received in props anymore.
       toRemove.forEach(tr => {
-        console.log(`removing circle handler of type ${tr[0]}`);
         google.maps.event.clearListeners(this.circle, tr[0]);
       });
 
@@ -133,7 +127,6 @@ class Circle extends React.Component<ICircleProps> {
 
       // Add the listeners we now have, but didn't have before.
       toAdd.forEach(tr => {
-        console.log(`adding circle handler of type ${tr[0]}`);
         this.circle.addListener(tr[0], tr[1]);
       });
     }

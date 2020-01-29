@@ -50,10 +50,6 @@ class Marker extends React.Component<IMarkerProps> {
     this.marker.setMap(null);
   }
 
-  public componentDidUpdate() {
-    console.log("updating marker");
-  }
-
   public shouldComponentUpdate(nextProps: IMarkerProps) {
     let dirty = false;
 
@@ -108,7 +104,6 @@ class Marker extends React.Component<IMarkerProps> {
   private setEventListeners(eventHandlers: IMarkerProps["eventHandlers"]) {
     eventHandlers!.forEach(([name, handler]) =>
       this.marker.addListener(name, args => {
-        console.log(`handling ${name} on marker`);
         handler(this.marker, [args!]);
       })
     );
@@ -127,7 +122,6 @@ class Marker extends React.Component<IMarkerProps> {
 
       // Remove the listeners that aren't being received in props anymore.
       toRemove.forEach(tr => {
-        console.log(`removing marker handler of type ${tr[0]}`);
         google.maps.event.clearListeners(this.marker, tr[0]);
       });
 
@@ -141,7 +135,6 @@ class Marker extends React.Component<IMarkerProps> {
 
       // Add the listeners we now have, but didn't have before.
       toAdd.forEach(tr => {
-        console.log(`adding marker handler of type ${tr[0]}`);
         this.marker.addListener(tr[0], tr[1]);
       });
     }
