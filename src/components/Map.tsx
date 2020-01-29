@@ -1,6 +1,5 @@
 import React from "react";
 
-import styled from "styled-components";
 import { compareLatLng } from "../helpers/latlng";
 
 const MapCtx = React.createContext<google.maps.Map<HTMLElement> | null>(null);
@@ -35,6 +34,7 @@ interface IMapProps {
   };
   eventHandlers?: Array<EventHandlerPair<EventName, google.maps.Map>>;
   bounds?: google.maps.LatLngBounds | google.maps.LatLngBoundsLiteral;
+  className?: string;
 }
 
 /**
@@ -65,13 +65,6 @@ export type EventHandlerPair<N extends EventName, T> = [
   N,
   (obj: T, args: EventHandlerFunc<N>) => void
 ];
-
-/**
- * We rely on flex to control the size of the map.
- */
-const MapElem = styled.div`
-  flex-grow: 1;
-`;
 
 export class Map extends React.Component<IMapProps> {
   public map: google.maps.Map<HTMLElement>;
@@ -136,7 +129,11 @@ export class Map extends React.Component<IMapProps> {
     return (
       <MapCtx.Provider value={this.map}>
         <>
-          <MapElem ref={this.mapRef} />
+          <div
+            className={this.props.className}
+            style={{ flexGrow: 1 }}
+            ref={this.mapRef}
+          />
           {this.props.children}
         </>
       </MapCtx.Provider>
