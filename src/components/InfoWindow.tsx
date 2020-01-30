@@ -37,38 +37,27 @@ class InfoWindow extends React.Component<IInfoWindowProps> {
     });
   }
 
-  public shouldComponentUpdate(nextProps: IInfoWindowProps) {
-    let dirty = false;
-
-    if (
-      this.props.options &&
-      this.props.options.position &&
-      nextProps.options &&
-      nextProps.options.position &&
-      !compareLatLng(this.props.options.position, nextProps.options.position)
-    ) {
-      this.infoWindow.setPosition(nextProps.options.position);
-      dirty = true;
-    }
-
-    if (this.props.open !== nextProps.open) {
-      if (nextProps.open) {
-        this.infoWindow.open(
-          this.props.map,
-          this.props.anchor && this.props.anchor()
-        );
-      } else {
-        this.infoWindow.close();
-      }
-    }
-
-    return dirty;
-  }
-
   public render() {
     this.infoWindow.setContent(
       renderToStaticMarkup(<>{this.props.children}</>)
     );
+
+    if (
+      this.props.options &&
+      this.props.options.position &&
+      !compareLatLng(this.props.options.position, this.infoWindow.getPosition())
+    ) {
+      this.infoWindow.setPosition(this.props.options.position);
+    }
+
+    if (this.props.open) {
+      this.infoWindow.open(
+        this.props.map,
+        this.props.anchor && this.props.anchor()
+      );
+    } else {
+      this.infoWindow.close();
+    }
 
     return null;
   }
