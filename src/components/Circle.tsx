@@ -143,4 +143,4 @@ class Circle extends React.Component<ICircleProps> {
 
 (Circle as React.ComponentClass).displayName = "Circle";
 
-export default withMap<ICircleProps>(Circle);
+export default withMap<Circle, ICircleProps>(Circle);

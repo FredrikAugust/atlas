@@ -150,4 +150,4 @@ class Marker extends React.Component<IMarkerProps> {
 }
 
 (Marker as React.ComponentClass).displayName = "Marker";
-export default withMap<IMarkerProps>(Marker);
+export default withMap<Marker, IMarkerProps>(Marker);
