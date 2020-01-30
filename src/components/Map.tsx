@@ -15,7 +15,10 @@ export interface IInjectedWithMapProps {
  *
  * @param Component The component which will receive the map prop.
  */
-export const withMap = <C, P extends IInjectedWithMapProps>(
+export const withMap = <
+  C extends React.ComponentClass<any>,
+  P extends IInjectedWithMapProps
+>(
   Component: React.ComponentType<P>
 ) => {
   const Cmpnt = React.forwardRef<C, P>((props, ref) => {

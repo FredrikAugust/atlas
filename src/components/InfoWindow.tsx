@@ -13,9 +13,7 @@ type Omit<T, K extends string | number | symbol> = {
 };
 
 interface IInfoWindowProps extends IInjectedWithMapProps {
-  options: Omit<google.maps.InfoWindowOptions, "content"> & {
-    position: google.maps.LatLng | google.maps.LatLngLiteral;
-  };
+  options?: Omit<google.maps.InfoWindowOptions, "content">;
   open: boolean;
   /**
    * This is useful for when you want to sync the state between the infowindow
@@ -52,6 +50,9 @@ class InfoWindow extends React.Component<IInfoWindowProps> {
 
     if (
       this.props.options &&
+      this.props.options.position &&
+      nextProps.options &&
+      nextProps.options.position &&
       !compareLatLng(this.props.options.position, nextProps.options.position)
     ) {
       this.infoWindow.setPosition(nextProps.options.position);
@@ -82,4 +83,6 @@ class InfoWindow extends React.Component<IInfoWindowProps> {
 }
 
 (InfoWindow as React.ComponentClass).displayName = "InfoWindow";
-export default withMap<InfoWindow, IInfoWindowProps>(InfoWindow);
+
+export default withMap<typeof InfoWindow, IInfoWindowProps>(InfoWindow);
+export type InfoWindowType = typeof InfoWindow;
