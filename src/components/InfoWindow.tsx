@@ -24,7 +24,7 @@ interface IInfoWindowProps extends IInjectedWithMapProps {
    * I decided to make this a function which evaluates to an object instead, as
    * that made it easier to create code that relied on another component.
    */
-  anchor?: () => google.maps.Circle | google.maps.Marker;
+  anchor?: () => google.maps.Circle | google.maps.Marker | undefined;
 }
 
 class InfoWindow extends React.Component<IInfoWindowProps> {
@@ -85,4 +85,4 @@ class InfoWindow extends React.Component<IInfoWindowProps> {
 (InfoWindow as React.ComponentClass).displayName = "InfoWindow";
 
 export default withMap<typeof InfoWindow, IInfoWindowProps>(InfoWindow);
-export type InfoWindowType = typeof InfoWindow;
+export type InfoWindowType = InfoWindow;

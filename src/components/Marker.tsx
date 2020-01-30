@@ -151,4 +151,4 @@ class Marker extends React.Component<IMarkerProps> {
 
 (Marker as React.ComponentClass).displayName = "Marker";
 export default withMap<typeof Marker, IMarkerProps>(Marker);
-export type MarkerType = typeof Marker;
+export type MarkerType = Marker;
