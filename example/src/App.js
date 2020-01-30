@@ -1,16 +1,17 @@
 import React from "react";
 
-import { Map, useGoogle, Marker, Circle } from "reactive-atlas";
+import { Map, useGoogle, Marker, Circle, InfoWindow } from "reactive-atlas";
 
 export const App = () => {
   const google = useGoogle();
+
   const [pos, setPos] = React.useState(12);
-
   const [mapHandler, setMapHandler] = React.useState([]);
-
   const [markers, setMarkers] = React.useState([]);
-
   const [bounds, setBounds] = React.useState();
+  const [open, setOpen] = React.useState(false);
+
+  const ref = React.useRef();
 
   React.useEffect(() => {
     const b = new google.maps.LatLngBounds();
@@ -45,6 +46,7 @@ export const App = () => {
           />
         ))}
         <Marker
+          ref={ref}
           options={{
             position: new google.maps.LatLng(pos, pos),
             title: "Hello, World!"
@@ -58,10 +60,19 @@ export const App = () => {
                 setMapHandler([["click", (map, args) => setPos(p => p + 1)]]);
 
                 setMarkers(m => [...m, Math.random()]);
+
+                setOpen(o => !o);
               }
             ]
           ]}
         />
+        <InfoWindow
+          open={open}
+          setOpen={setOpen}
+          anchor={() => ref.current.marker}
+        >
+          <p>Testing 123 wow</p>
+        </InfoWindow>
         <Circle
           options={{
             editable: true,
