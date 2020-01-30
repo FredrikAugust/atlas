@@ -94,6 +94,44 @@ const Globus = () => {
 };
 ```
 
+### InfoWindow (and ref forwarding)
+
+The InfoWindow can be handy if you want to display extra information about e.g. a `Marker`.
+
+```tsx
+import { InfoWindow, Marker, Map, useGoogle } from "reactive-atlas";
+
+const IWExample = () => {
+  const ref = React.useRef<Marker>();
+  const [open, setOpen] = React.useState(false);
+
+  return (
+    <Map options={{ zoom: 8, center: new google.maps.LatLng(1, 2) }}>
+      <Marker
+        ref={ref}
+        options={{
+          position: new google.maps.LatLng(63, 10),
+          title: "Hello, World!",
+          label: "B"
+        }}
+        eventHandlers={[["click", () => setOpen(o => !o)]]}
+      />
+
+      <InfoWindow
+        open={open}
+        setOpen={setOpen}
+        anchor={() => ref.current.marker}
+      >
+        <p>Hello, World!</p>
+      </InfoWindow>
+    </Map>
+  );
+};
+```
+
+As you can see, you can pass a ref to the `Marker`, and later get out the
+underlying `marker` property.
+
 ### Circle
 
 Exactly the same usage as `Marker`.
