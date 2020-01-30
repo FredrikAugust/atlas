@@ -18,15 +18,15 @@ export interface IInjectedWithMapProps {
 export const withMap = <C, P extends IInjectedWithMapProps>(
   Component: React.ComponentType<P>
 ) => {
-  const C = React.forwardRef<C, P>((props, ref) => {
+  const Cmpnt = React.forwardRef<C, P>((props, ref) => {
     const map = useMap();
 
     return <Component map={map} ref={ref} {...props} />;
   });
   // This makes it a bit prettier while debugging.
-  C.displayName = `withMap(${Component.displayName || "unnamed"})`;
+  Cmpnt.displayName = `withMap(${Component.displayName || "unnamed"})`;
   // This is a hack to force typescript to interpret it as I tell it to.
-  return C;
+  return (Cmpnt as unknown) as C;
 };
 
 interface IMapProps {

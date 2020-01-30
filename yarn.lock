@@ -9561,6 +9561,11 @@ universalify@^0.1.0:
   resolved "https://registry.yarnpkg.com/universalify/-/universalify-0.1.2.tgz#b646f69be3942dabcecc9d6639c80dc105efaa66"
   integrity sha512-rBJeI5CXAlmy1pV+617WB9J63U6XcazHHF2f2dbJix4XzpUF0RS3Zbj0FGIOCAva5P/d/GBOYaACQ1w+0azUkg==
 
+unknown-ts@^0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/unknown-ts/-/unknown-ts-0.1.0.tgz#b34c5ec61fe84e734fa59cd9ddc3ebc32a9ecce7"
+  integrity sha512-P+mV7fa1UAJ32HN+P1/eswQ33wmXt4+AuE20K0+ixzBe3t+NF51jp7gr0W6w+dSqBPvwmwSRVJIJHqaTdyf6Ag==
+
 unpipe@1.0.0, unpipe@~1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/unpipe/-/unpipe-1.0.0.tgz#b2bf4ee8514aae6165b4817829d21b2ef49904ec"
