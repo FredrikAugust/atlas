@@ -4,16 +4,8 @@ import { renderToStaticMarkup } from "react-dom/server";
 import { compareLatLng } from "../helpers/latlng";
 import { IInjectedWithMapProps, withMap } from "./Map";
 
-/**
- * For some reason, Omit is not present in the TS version this library creator
- * uses.
- */
-type Omit<T, K extends string | number | symbol> = {
-  [P in Exclude<keyof T, K>]: T[P];
-};
-
 interface IInfoWindowProps extends IInjectedWithMapProps {
-  options?: Omit<google.maps.InfoWindowOptions, "content">;
+  options?: google.maps.InfoWindowOptions;
   open: boolean;
   /**
    * This is useful for when you want to sync the state between the infowindow
