@@ -7,6 +7,7 @@ const MapCtx = React.createContext<google.maps.Map<HTMLElement> | null>(null);
 export const useMap = () => React.useContext(MapCtx)!;
 export interface IInjectedWithMapProps {
   map?: google.maps.Map;
+  ref?: React.Ref<any>;
 }
 
 /**
@@ -14,16 +15,18 @@ export interface IInjectedWithMapProps {
  *
  * @param Component The component which will receive the map prop.
  */
-export const withMap = <P extends IInjectedWithMapProps>(
+export const withMap = <C, P extends IInjectedWithMapProps>(
   Component: React.ComponentType<P>
 ) => {
-  const C: React.FC<P> = props => {
+  const C = React.forwardRef<C, P>((props, ref) => {
     const map = useMap();
-    return <Component map={map} {...props} />;
-  };
+
+    return <Component map={map} ref={ref} {...props} />;
+  });
   // This makes it a bit prettier while debugging.
   C.displayName = `withMap(${Component.displayName || "unnamed"})`;
-  return C as React.FC<Exclude<P, "map">>;
+  // This is a hack to force typescript to interpret it as I tell it to.
+  return C;
 };
 
 interface IMapProps {
