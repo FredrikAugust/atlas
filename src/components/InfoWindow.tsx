@@ -1,4 +1,6 @@
 import React from "react";
+
+import ReactDOM from "react-dom";
 import { renderToString } from "react-dom/server";
 
 import { compareLatLng } from "../helpers/latlng";
@@ -22,12 +24,21 @@ interface IInfoWindowProps extends IInjectedWithMapProps {
 class InfoWindow extends React.Component<IInfoWindowProps> {
   public infoWindow: google.maps.InfoWindow;
 
+  public contentRef = React.createRef<HTMLDivElement>();
+  private token: number;
+
   constructor(args: IInfoWindowProps) {
     super(args);
 
+    this.token = Math.floor(Math.random() * 10e16);
+
     this.infoWindow = new google.maps.InfoWindow({
       ...args.options,
-      content: renderToString(<>{this.props.children}</>)
+      content: renderToString(
+        <div id={`infowindow-reactive-atlas-${this.token}`}>
+          {this.props.children}
+        </div>
+      )
     });
 
     this.infoWindow.addListener("closeclick", () => {
@@ -35,11 +46,16 @@ class InfoWindow extends React.Component<IInfoWindowProps> {
         this.props.setOpen(false);
       }
     });
+
+    google.maps.event.addListenerOnce(this.infoWindow, "domready", () => {
+      ReactDOM.hydrate(
+        <>{this.props.children}</>,
+        document.querySelector(`#infowindow-reactive-atlas-${this.token}`)
+      );
+    });
   }
 
   public render() {
-    this.infoWindow.setContent(renderToString(<>{this.props.children}</>));
-
     if (
       this.props.options &&
       this.props.options.position &&
