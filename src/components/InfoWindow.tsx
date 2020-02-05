@@ -1,5 +1,5 @@
 import React from "react";
-import { renderToStaticMarkup } from "react-dom/server";
+import { renderToString } from "react-dom/server";
 
 import { compareLatLng } from "../helpers/latlng";
 import { IInjectedWithMapProps, withMap } from "./Map";
@@ -27,7 +27,7 @@ class InfoWindow extends React.Component<IInfoWindowProps> {
 
     this.infoWindow = new google.maps.InfoWindow({
       ...args.options,
-      content: renderToStaticMarkup(<>{this.props.children}</>)
+      content: renderToString(<>{this.props.children}</>)
     });
 
     this.infoWindow.addListener("closeclick", () => {
@@ -38,9 +38,7 @@ class InfoWindow extends React.Component<IInfoWindowProps> {
   }
 
   public render() {
-    this.infoWindow.setContent(
-      renderToStaticMarkup(<>{this.props.children}</>)
-    );
+    this.infoWindow.setContent(renderToString(<>{this.props.children}</>));
 
     if (
       this.props.options &&
