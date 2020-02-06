@@ -34,8 +34,14 @@ export const App = () => {
         API (v3).
       </em>
       <div className="badges">
-        <img src="https://img.shields.io/npm/v/reactive-atlas.svg" />
-        <img src="https://img.shields.io/badge/code_style-standard-brightgreen.svg" />
+        <img
+          alt="reactive atlas npm package version"
+          src="https://img.shields.io/npm/v/reactive-atlas.svg"
+        />
+        <img
+          alt="code standard badge"
+          src="https://img.shields.io/badge/code_style-standard-brightgreen.svg"
+        />
       </div>
       <p>
         You can find more information about the objects{" "}
