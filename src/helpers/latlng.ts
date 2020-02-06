@@ -4,9 +4,16 @@
  * @param pos2 latlng or latlngliteral
  */
 export const compareLatLng = (
-  pos1: google.maps.LatLng | google.maps.LatLngLiteral,
-  pos2: google.maps.LatLng | google.maps.LatLngLiteral
+  pos1?: google.maps.LatLng | google.maps.LatLngLiteral,
+  pos2?: google.maps.LatLng | google.maps.LatLngLiteral
 ): boolean => {
+  if (pos1 === undefined || pos2 === undefined) {
+    if (pos1 === pos2) {
+      return true;
+    }
+    return false;
+  }
+
   if (typeof pos1.lat !== "function") {
     pos1 = new google.maps.LatLng({ lat: pos1.lat, lng: pos1.lng as number });
   }

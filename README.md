@@ -148,7 +148,7 @@ const Globus = () => {
     <Map options={{ zoom: 8, center: new google.maps.LatLng(1, 2) }}>
       <Circle
         options={{
-          position: new google.maps.LatLng(63, 10),
+          center: new google.maps.LatLng(63, 10),
           radius: 128000
         }}
       />
