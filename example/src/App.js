@@ -30,8 +30,8 @@ export const App = () => {
       <em>
         A Google Maps React library. Written because I was dissatisfied with
         fullstackreact/google-maps-react. Will have focus on minimal rerenders,
-        and trying to rely as much as possible on the Google Maps Javascritpt
-        API (v3).
+        and trying to rely as much as possible on the Google Maps Javascript API
+        (v3).
       </em>
       <div className="badges">
         <img
