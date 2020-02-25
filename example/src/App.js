@@ -162,10 +162,12 @@ const Globus = () => {
             <em>Google Maps API MVCObject</em>, and not a React component.
           </p>
           <pre>
-            {`import { InfoWindow, Marker, Map, useGoogle } from "reactive-atlas";
+            {`import { InfoWindow, Marker, MarkerType, Map, useGoogle } from "reactive-atlas";
 
 const IWExample = () => {
-  const ref = React.useRef<Marker>();
+  const ref = React.useRef<MarkerType>(null);
+  const getMarkerObj = () => ref?.current?.marker;
+
   const [open, setOpen] = React.useState(false);
 
   return (
@@ -183,7 +185,7 @@ const IWExample = () => {
       <InfoWindow
         open={open}
         setOpen={setOpen}
-        anchor={() => ref.current.marker}
+        anchor={getMarkerObj}
       >
         <p>Hello, World!</p>
       </InfoWindow>
